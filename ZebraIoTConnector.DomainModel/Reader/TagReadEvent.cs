@@ -8,8 +8,6 @@ namespace ZebraIoTConnector.DomainModel.Reader
 {
     public class TagReadEvent
     {
-        public int EventNum { get; set; }
-
         public string Format { get; set; }
 
         public string IdHex { get; set; }

@@ -1,9 +1,11 @@
-﻿namespace ZebraIoTConnector.FXReaderInterface
+﻿using ZebraIoTConnector.DomainModel.Reader;
+
+namespace ZebraIoTConnector.FXReaderInterface
 {
     public interface IFXReaderManager
     {
-        public void HearthBeatEventReceived();
-        public void TagDataEventReceived();
+        public void HearthBeatEventReceived(HeartBeatEvent heartBeatEvent);
+        public void TagDataEventReceived(string clientId, List<TagReadEvent> tagReadEvent);
         public void GPInStatusChanged();
     }
 }

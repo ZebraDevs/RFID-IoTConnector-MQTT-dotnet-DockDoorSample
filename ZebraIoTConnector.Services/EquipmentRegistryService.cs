@@ -4,29 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ZebraIoTConnector.DomainModel.Reader;
+using ZebraIoTConnector.Persistence;
 using ZebraIoTConnector.Persistence.Repositories;
 
 namespace ZebraIoTConnector.Services
 {
     public class EquipmentRegistryService : IEquipmentRegistryService
     {
-        private readonly IEquipmentRepository equipmentRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public EquipmentRegistryService(IEquipmentRepository equipmentRepository)
+        public EquipmentRegistryService(IUnitOfWork unitOfWork)
         {
-            this.equipmentRepository = equipmentRepository ?? throw new ArgumentNullException(nameof(equipmentRepository));
+            this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
-        public void FXReaderHeartBeat(string clientId, HeartBeatEvent heartBeat)
+        public void FXReaderHeartBeat(HeartBeatEvent heartBeat)
         {
-            string storageUnit = "";
-
-            // These 2 storage units are added automatically on model creating for test purposes.
-            if (clientId.EndsWith("_IN"))
-                storageUnit = "DOCKDOOR_INBOUND";
-            else
-                storageUnit = "DOCKDOOR_OUTBOUND";
-
-            equipmentRepository.AddIfNotExists(clientId, storageUnit);
+            // Add reader if it does not exists.
+            // Storage Unit to be configured manually
+            unitOfWork.EquipmentRepository.AddIfNotExists(heartBeat.ClientId, null);
         }
     }
 }

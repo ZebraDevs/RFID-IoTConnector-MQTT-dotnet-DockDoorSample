@@ -9,6 +9,6 @@ namespace ZebraIoTConnector.Services
 {
     public interface IEquipmentRegistryService
     {
-        public void FXReaderHeartBeat(string clientId, HeartBeatEvent heartBeat);
+        public void FXReaderHeartBeat(HeartBeatEvent heartBeat);
     }
 }

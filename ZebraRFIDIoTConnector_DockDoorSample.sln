@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZebraIoTConnector.FXReaderI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZebraIoTConnector.DomainModel", "ZebraIoTConnector.DomainModel\ZebraIoTConnector.DomainModel.csproj", "{04DE33ED-7D6C-4EE7-8418-2807C6DB522B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZebraIoTConnector.Client.MQTT.Console", "ZebraIoTConnector.Client.MQTT.Console\ZebraIoTConnector.Client.MQTT.Console.csproj", "{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{04DE33ED-7D6C-4EE7-8418-2807C6DB522B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04DE33ED-7D6C-4EE7-8418-2807C6DB522B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04DE33ED-7D6C-4EE7-8418-2807C6DB522B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

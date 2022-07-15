@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZebraIoTConnector.DomainModel.Reader;
+using ZebraIoTConnector.Services;
 
 namespace ZebraIoTConnector.FXReaderInterface
 {
-    internal class FXReaderManager : IFXReaderManager
+    public class FXReaderManager : IFXReaderManager
     {
-        public void HearthBeatEventReceived()
+        private readonly IEquipmentRegistryService equipmentRegistryService;
+        private readonly IMaterialMovementService materialMovementService;
+
+        public FXReaderManager(IEquipmentRegistryService equipmentRegistryService, IMaterialMovementService materialMovementService)
         {
-            // Call eq registry service
-            throw new NotImplementedException();
+            this.equipmentRegistryService = equipmentRegistryService ?? throw new ArgumentNullException(nameof(equipmentRegistryService));
+            this.materialMovementService = materialMovementService ?? throw new ArgumentNullException(nameof(materialMovementService));
+        }
+        public void HearthBeatEventReceived(HeartBeatEvent heartBeatEvent)
+        {
+            equipmentRegistryService.FXReaderHeartBeat(heartBeatEvent);
         }
 
-        public void TagDataEventReceived()
+        public void TagDataEventReceived(string clientId, List<TagReadEvent> tagReadEvent)
         {
-            throw new NotImplementedException();
+            materialMovementService.NewTagReaded(clientId, tagReadEvent);
         }
         public void GPInStatusChanged()
         {

@@ -8,5 +8,6 @@ namespace ZebraIoTConnector.DomainModel.Reader
 {
     public class HeartBeatEvent
     {
+        public string ClientId { get; set; }
     }
 }

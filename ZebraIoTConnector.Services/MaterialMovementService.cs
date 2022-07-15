@@ -23,6 +23,14 @@ namespace ZebraIoTConnector.Services
             // Retrieve equipment by name (clientId).
             var reader = unitOfWork.EquipmentRepository.GetEquipmentByName(clientId);
 
+            if (string.IsNullOrEmpty(reader.RefStorageUnitName))
+            {
+                // DO NOTHING
+                // Storage Unit is not configured for this reader
+                Console.WriteLine($"WARN: Storage Unit has to be configured manually so that reader '{clientId}' can be used");
+                return;
+            }
+
             // Retrieve sublots associated to readed epcs
             var sublots = unitOfWork.SublotRepository.GetSublotByIdentifiers(tagReadEvent.Select(x => x.IdHex).ToArray());
 

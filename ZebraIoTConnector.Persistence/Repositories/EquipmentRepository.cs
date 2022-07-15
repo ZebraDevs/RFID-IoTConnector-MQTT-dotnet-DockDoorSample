@@ -43,8 +43,8 @@ namespace ZebraIoTConnector.Persistence.Repositories
                 Id = eq.Id,
                 Name = eq.Name,
                 Description = eq.Description,
-                RefStorageUnitName = eq.ReferenceStorageUnit.Name,
-                RefStorageUnitDirection = eq.ReferenceStorageUnit.Direction
+                RefStorageUnitName = eq.ReferenceStorageUnit?.Name,
+                RefStorageUnitDirection = eq.ReferenceStorageUnit?.Direction
             };
         }
     }
