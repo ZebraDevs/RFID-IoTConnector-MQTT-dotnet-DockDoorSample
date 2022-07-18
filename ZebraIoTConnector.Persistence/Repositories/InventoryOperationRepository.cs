@@ -22,7 +22,7 @@ namespace ZebraIoTConnector.Persistence.Repositories
         {
             var equipment = zebraDbContext.Equipments.Single(x => x.Id == equipmentDto.Id);
             var destinationStorageUnit = zebraDbContext.StorageUnits.Single(x => x.Name == destinationStoragrUnitName);
-            var sublots = zebraDbContext.Sublots.Where(x => sublotDtoList.Select(x => x.Id).Contains(x.Id))
+            var sublots = zebraDbContext.Sublots.Where(x => sublotDtoList.Select(x => x.Identifier).Contains(x.Identifier))
                 .Include(x => x.StorageUnit).ToList();
 
             foreach (var sublot in sublots)

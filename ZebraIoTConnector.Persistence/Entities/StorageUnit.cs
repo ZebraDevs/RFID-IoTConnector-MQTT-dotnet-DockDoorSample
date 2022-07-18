@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZebraIoTConnector.DomainModel.Enums;
 
 namespace ZebraIoTConnector.Persistence.Entities
 {
+    [Index(nameof(Name), IsUnique = true)]
     public class StorageUnit
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

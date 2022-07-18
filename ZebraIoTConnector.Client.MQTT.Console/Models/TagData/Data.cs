@@ -40,7 +40,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Models.TagData
 
         [DataMember(Name = "phase", EmitDefaultValue = false)]
         [JsonPropertyName("phase")]
-        public int Phase { get; set; }
+        public double Phase { get; set; }
 
         [DataMember(Name = "reads", EmitDefaultValue = false)]
         [JsonPropertyName("reads")]

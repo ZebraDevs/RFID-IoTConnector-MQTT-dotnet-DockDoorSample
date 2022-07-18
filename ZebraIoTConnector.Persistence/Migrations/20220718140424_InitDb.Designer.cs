@@ -12,7 +12,7 @@ using ZebraIoTConnector.Persistence;
 namespace ZebraIoTConnector.Persistence.Migrations
 {
     [DbContext(typeof(ZebraDbContext))]
-    [Migration("20220718105957_InitDb")]
+    [Migration("20220718140424_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,12 +38,15 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ReferenceStorageUnitId")
+                    b.Property<int?>("ReferenceStorageUnitId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("ReferenceStorageUnitId");
 
@@ -100,9 +103,12 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("StorageUnits");
                 });
@@ -121,7 +127,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Identifier")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MaterialId")
                         .IsRequired()
@@ -135,6 +141,9 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Identifier")
+                        .IsUnique();
+
                     b.HasIndex("StorageUnitId");
 
                     b.ToTable("Sublots");
@@ -144,9 +153,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 {
                     b.HasOne("ZebraIoTConnector.Persistence.Entities.StorageUnit", "ReferenceStorageUnit")
                         .WithMany()
-                        .HasForeignKey("ReferenceStorageUnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReferenceStorageUnitId");
 
                     b.Navigation("ReferenceStorageUnit");
                 });

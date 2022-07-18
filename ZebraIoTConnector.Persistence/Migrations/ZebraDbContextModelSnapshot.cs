@@ -36,12 +36,15 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ReferenceStorageUnitId")
+                    b.Property<int?>("ReferenceStorageUnitId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("ReferenceStorageUnitId");
 
@@ -98,9 +101,12 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("StorageUnits");
                 });
@@ -119,7 +125,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.Property<string>("Identifier")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MaterialId")
                         .IsRequired()
@@ -133,6 +139,9 @@ namespace ZebraIoTConnector.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Identifier")
+                        .IsUnique();
+
                     b.HasIndex("StorageUnitId");
 
                     b.ToTable("Sublots");
@@ -142,9 +151,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 {
                     b.HasOne("ZebraIoTConnector.Persistence.Entities.StorageUnit", "ReferenceStorageUnit")
                         .WithMany()
-                        .HasForeignKey("ReferenceStorageUnitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ReferenceStorageUnitId");
 
                     b.Navigation("ReferenceStorageUnit");
                 });

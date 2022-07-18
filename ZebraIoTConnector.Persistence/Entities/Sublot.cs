@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZebraIoTConnector.Persistence.Entities
 {
+    [Index(nameof(Identifier), IsUnique = true)]
     public class Sublot
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

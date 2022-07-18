@@ -23,6 +23,13 @@ namespace ZebraIoTConnector.Services
             // Retrieve equipment by name (clientId).
             var reader = unitOfWork.EquipmentRepository.GetEquipmentByName(clientId);
 
+            if(reader == null)
+            {
+                // reader not registered yet, tag read message received before the hearbeat
+                Console.WriteLine($"Reader {clientId} not registered yet, tag read message received before the hearbeat");
+                return;
+            }
+
             if (string.IsNullOrEmpty(reader.RefStorageUnitName))
             {
                 // DO NOTHING
@@ -31,9 +38,9 @@ namespace ZebraIoTConnector.Services
                 return;
             }
 
-            // Retrieve sublots associated to readed epcs
-            var sublots = unitOfWork.SublotRepository.GetSublotByIdentifiers(tagReadEvent.Select(x => x.IdHex).ToArray());
-
+            // Retrieve sublots associated to readed epcs or create them.
+            var sublots = unitOfWork.SublotRepository.GetOrCreateSublotByIdentifier(reader.RefStorageUnitName, tagReadEvent.Select(x => x.IdHex).ToArray());
+            
             // Check direction of Equipment storage unit
             // Move sublots either on WH or Truck upon Storage Unit direction.
 

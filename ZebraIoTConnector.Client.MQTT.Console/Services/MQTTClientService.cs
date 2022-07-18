@@ -119,7 +119,8 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         Task OnApplicationMessageReceived(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
-            return ApplicationMessageReceived.Invoke(new SubscriptionEventReceived(eventArgs.ClientId, eventArgs.ApplicationMessage.Topic, Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)));
+            
+            return ApplicationMessageReceived.Invoke(new SubscriptionEventReceived(eventArgs.ApplicationMessage.Topic, Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)));
         }
 
         Task OnDisconnected(MqttClientDisconnectedEventArgs eventArgs)

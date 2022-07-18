@@ -23,7 +23,7 @@ namespace ZebraIoTConnector.Persistence.Repositories
             var eq = zebraDbContext.Equipments.SingleOrDefault(x => x.Name == equipmentName);
             if (eq == null)
             {
-                var storageUnit = zebraDbContext.StorageUnits.Single(x => x.Name == storageUnitName);
+                var storageUnit = zebraDbContext.StorageUnits.SingleOrDefault(x => x.Name == storageUnitName);
                 zebraDbContext.Add(new Equipment()
                 {
                     Name = equipmentName,
@@ -37,7 +37,11 @@ namespace ZebraIoTConnector.Persistence.Repositories
         public EquipmentDto GetEquipmentByName(string name)
         {
             var eq = zebraDbContext.Equipments
-                .Include(x => x.ReferenceStorageUnit).Single(x => x.Name == name);
+                .Include(x => x.ReferenceStorageUnit).SingleOrDefault(x => x.Name == name);
+
+            if (eq == null)
+                return null;
+
             return new EquipmentDto()
             {
                 Id = eq.Id,

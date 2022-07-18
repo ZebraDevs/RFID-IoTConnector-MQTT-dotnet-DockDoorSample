@@ -9,7 +9,7 @@ namespace ZebraIoTConnector.Persistence.Repositories
 {
     public interface ISublotRepository
     {
-        public List<SublotDto> GetSublotByIdentifiers(params string[] identifiers);
+        public List<SublotDto> GetOrCreateSublotByIdentifier(string creationUnit, params string[] identifiers);
         public void MoveSublots(List<SublotDto> sublots, string newStorageUnit);
     }
 }

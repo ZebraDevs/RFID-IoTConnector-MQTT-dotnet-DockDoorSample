@@ -31,13 +31,13 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
 
             switch (args.Topic.Split('/').Last())
             {
-                case "tagDataEvents":
+                case "TagDataEvents":
                     subscriptionEventParser.TagDataEventParser(args);
                     break;
-                case "managementEvents":
+                case "ManagementEvents":
                     subscriptionEventParser.ManagementEventParser(args);
                     break;
-                case "controlResponse":
+                case "ControlResponse":
                     break;
                 default:
                     break;

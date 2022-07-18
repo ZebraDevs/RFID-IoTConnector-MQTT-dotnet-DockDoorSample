@@ -15,7 +15,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Direction = table.Column<int>(type: "int", nullable: false)
                 },
@@ -30,9 +30,9 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReferenceStorageUnitId = table.Column<int>(type: "int", nullable: false)
+                    ReferenceStorageUnitId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,8 +41,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
                         name: "FK_Equipments_StorageUnits_ReferenceStorageUnitId",
                         column: x => x.ReferenceStorageUnitId,
                         principalTable: "StorageUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +50,7 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Identifier = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Identifier = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MaterialId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BatchNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StorageUnitId = table.Column<int>(type: "int", nullable: false),
@@ -105,6 +104,12 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Equipments_Name",
+                table: "Equipments",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Equipments_ReferenceStorageUnitId",
                 table: "Equipments",
                 column: "ReferenceStorageUnitId");
@@ -130,48 +135,24 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 column: "SublotId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StorageUnits_Name",
+                table: "StorageUnits",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sublots_Identifier",
+                table: "Sublots",
+                column: "Identifier",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sublots_StorageUnitId",
                 table: "Sublots",
                 column: "StorageUnitId");
 
-            migrationBuilder.Sql(
-                @"USE [ZebraRFID_DockDoor]
-                GO
-                SET IDENTITY_INSERT[dbo].[StorageUnits] ON
-                GO
-                INSERT[dbo].[StorageUnits]([Id], [Name], [Description], [Direction]) VALUES(1, N'DOCK_OUT_WH1', N'DockDoor_Warehouse1', 2)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(2, N'DOCK_IN_WH2', N'DockDoor_Warehouse2', 1)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(3, N'TRUCK', N'TRUCK', 1)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(4, N'WH1', N'Main WH1', 2)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(9, N'DOCK_OUT_WH1', N'DockDoor_Warehouse1', 2)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(10, N'DOCK_IN_WH2', N'DockDoor_Warehouse2', 1)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(11, N'TRUCK', N'TRUCK', 1)
-                GO
-                INSERT[dbo].[StorageUnits] ([Id], [Name], [Description], [Direction]) VALUES(12, N'WH1', N'Main WH1', 2)
-                GO
-                SET IDENTITY_INSERT[dbo].[StorageUnits] OFF
-                GO
-                SET IDENTITY_INSERT[dbo].[Equipments] ON
-                GO
-                INSERT[dbo].[Equipments]([Id], [Name], [Description], [ReferenceStorageUnitId]) VALUES(5, N'myfx', N'My Reader OUT WH1 (add yours or change name)', 9)
-                GO
-                INSERT[dbo].[Equipments] ([Id], [Name], [Description], [ReferenceStorageUnitId]) VALUES(6, N'myfx', N'My Reader IN WH2 (add yours or change name)', 10)
-                GO
-                SET IDENTITY_INSERT[dbo].[Equipments] OFF
-                GO
-                SET IDENTITY_INSERT[dbo].[Sublots] ON
-                GO
-                INSERT[dbo].[Sublots]([Id], [Identifier], [MaterialId], [BatchNumber], [StorageUnitId], [ProductionDate]) VALUES(3, N'8119cb0d0a9acb0d0a9a0000', N'123456789', N'00987654321', 12, CAST(N'2022-07-18T12:30:52.1342280' AS DateTime2))
-                GO
-                SET IDENTITY_INSERT[dbo].[Sublots] OFF
-                GO
-                ");     
+
+            migrationBuilder.Sql(Resources.InitScript);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
