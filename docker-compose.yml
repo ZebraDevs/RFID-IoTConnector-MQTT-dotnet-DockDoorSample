@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  zebraiotconnector.client.mqtt.console:
+    image: ${DOCKER_REGISTRY-}zebraiotconnectorclientmqttconsole
+    build:
+      context: .
+      dockerfile: ZebraIoTConnector.Client.MQTT.Console/Dockerfile
+    # Shared Network
+    networks:
+      - mosquitto_go_net
+  sql.data:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      - SA_PASSWORD=Zebra2022!
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    # Shared Network
+    networks:
+        - mosquitto_go_net  
+    hostname: "$host_name"
+
+  mosquitto:
+      image: eclipse-mosquitto:latest
+      container_name: mosquitto
+      restart: always
+      volumes:
+        - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:rw
+      ports:
+        - 1883:1883
+        - 9001:9001   
+      # Shared Network
+      networks:
+          - mosquitto_go_net
+      # Make mosquitto reachable from outside (FX reader)
+      hostname: "$host_name"
+
+
+networks:
+  mosquitto_go_net:
+    driver: bridge

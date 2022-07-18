@@ -27,12 +27,12 @@ namespace ZebraIoTConnector.Persistence.Repositories
 
             foreach (var sublot in sublots)
             {
-                zebraDbContext.Add(new InventoryOperation()
+                zebraDbContext.InventoryOperation.Add(new InventoryOperation()
                 {
                     Equipment = equipment,
                     Sublot = sublot,
-                    UnitFrom = sublot.StorageUnit, // Unit from is where the pallet was located before.
-                    UnitTo = destinationStorageUnit
+                    StorageUnitFrom = sublot.StorageUnit, // Unit from is where the pallet was located before.
+                    StorageUnitTo = destinationStorageUnit
                 });
             }
 

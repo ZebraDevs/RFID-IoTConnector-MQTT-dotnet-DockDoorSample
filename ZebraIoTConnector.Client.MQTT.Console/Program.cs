@@ -15,7 +15,7 @@ static IHostBuilder CreateHostBuilder(string[] args) =>
 using IHost host = CreateHostBuilder(args).Build();
 
 var mqttClientService = new MQTTClientService();
-mqttClientService.Connect("localhost").Wait();
+mqttClientService.Connect("mosquitto").Wait();
 
 Console.WriteLine("Connected!");
 
@@ -36,5 +36,5 @@ mqttClientService.ApplicationMessageReceived += async args =>
     }
 };
 
-Console.ReadKey();
+Console.ReadLine();
 

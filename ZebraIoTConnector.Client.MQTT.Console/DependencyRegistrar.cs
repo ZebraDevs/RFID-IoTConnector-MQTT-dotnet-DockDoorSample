@@ -1,15 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZebraIoTConnector.Client.MQTT.Console.Subscriptions;
 using ZebraIoTConnector.FXReaderInterface;
 using ZebraIoTConnector.Persistence;
 using ZebraIoTConnector.Services;
-
 namespace ZebraIoTConnector.Client.MQTT.Console
 {
     public class DependencyRegistrar

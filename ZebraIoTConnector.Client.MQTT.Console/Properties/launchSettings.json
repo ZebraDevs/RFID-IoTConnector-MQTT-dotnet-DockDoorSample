@@ -1,0 +1,13 @@
+{
+    "profiles": {
+        "ZebraIoTConnector.Client.MQTT.Console": {
+            "commandName": "Project"
+        },
+        "Docker": {
+            "commandName": "Docker"
+        }
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=sql.data,1433;Database=ZebraRFID_DockDoor;MultipleActiveResultSets=true;User ID=sa;Password=Zebra2022!"
+    }
+}

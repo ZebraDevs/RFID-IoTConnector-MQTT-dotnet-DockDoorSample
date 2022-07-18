@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZebraIoTConnector.DomainMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZebraIoTConnector.Client.MQTT.Console", "ZebraIoTConnector.Client.MQTT.Console\ZebraIoTConnector.Client.MQTT.Console.csproj", "{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{ECE66A16-23B3-4DBC-892C-F538BA6A555E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16E43FB2-3EA3-4626-A30B-89A48E2AD6EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECE66A16-23B3-4DBC-892C-F538BA6A555E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECE66A16-23B3-4DBC-892C-F538BA6A555E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECE66A16-23B3-4DBC-892C-F538BA6A555E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECE66A16-23B3-4DBC-892C-F538BA6A555E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
