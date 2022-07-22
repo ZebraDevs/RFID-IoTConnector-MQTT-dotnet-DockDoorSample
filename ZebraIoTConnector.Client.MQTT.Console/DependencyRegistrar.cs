@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using ZebraIoTConnector.Client.MQTT.Console.Configuration;
 using ZebraIoTConnector.Client.MQTT.Console.Publisher;
 using ZebraIoTConnector.Client.MQTT.Console.Services;
@@ -13,6 +15,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console
         // TODO: implement registration upon containers
         public static void BuildServiceCollection(IServiceCollection services)
         {
+            services.AddLogging((logBuilder) => logBuilder.SetMinimumLevel(LogLevel.Trace).AddConsole());
             // DAL
             services.AddDbContext<ZebraDbContext>();
             services.AddScoped<IEquipmentRegistryService, EquipmentRegistryService>();

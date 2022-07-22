@@ -23,7 +23,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         public event EventHandler? Disconnected;
 
-        //public event Action<string>? LogMessagePublished;
+        public event Action<string>? LogMessagePublished;
 
         public bool IsConnected => _mqttClient?.IsConnected == true;
 
@@ -142,8 +142,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         void OnLogMessagePublished(object? sender, MqttNetLogMessagePublishedEventArgs e)
         {
-            System.Console.WriteLine(e.LogMessage.Message);
-            //LogMessagePublished?.Invoke(e.LogMessage.Message);
+            LogMessagePublished?.Invoke(e.LogMessage.Message);
         }
 
         void ThrowIfNotConnected()

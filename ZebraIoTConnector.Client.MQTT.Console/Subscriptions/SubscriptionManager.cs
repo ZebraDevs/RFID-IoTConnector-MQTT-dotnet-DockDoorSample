@@ -1,15 +1,18 @@
-﻿using ZebraIoTConnector.Client.MQTT.Console.Model;
+﻿using Microsoft.Extensions.Logging;
+using ZebraIoTConnector.Client.MQTT.Console.Model;
 using ZebraIoTConnector.Client.MQTT.Console.Services;
 
 namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
 {
     public class SubscriptionManager : ISubscriptionManager
     {
+        private readonly ILogger<SubscriptionManager> logger;
         private readonly ISubscriptionEventParser subscriptionEventParser;
         private readonly IMQTTClientService mqttClientService;
 
-        public SubscriptionManager(ISubscriptionEventParser subscriptionEventParser, IMQTTClientService mqttClientService)
+        public SubscriptionManager(ILogger<SubscriptionManager> logger, ISubscriptionEventParser subscriptionEventParser, IMQTTClientService mqttClientService)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.subscriptionEventParser = subscriptionEventParser ?? throw new ArgumentNullException(nameof(subscriptionEventParser));
             this.mqttClientService = mqttClientService ?? throw new ArgumentNullException(nameof(mqttClientService));
         }
@@ -20,7 +23,8 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
             {
                 // Connect to MQTT broker
                 mqttClientService.Connect("mosquitto").Wait();
-                System.Console.WriteLine("Connected!");
+                mqttClientService.LogMessagePublished += arg => logger.LogDebug(arg);
+                logger.LogInformation("Connected!");
             }
         }
 
@@ -30,7 +34,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
             // Subscribe to all topics under zebra/#
             mqttClientService.Subscribe(topic).Wait();
 
-            System.Console.WriteLine($"Successfully subscribed to {topic}");
+            logger.LogInformation($"Successfully subscribed to {topic}");
 
             // Subscribe to events
             mqttClientService.ApplicationMessageReceived += async args =>
@@ -41,7 +45,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"ERROR: Unable to manage subscription: {ex.Message}");
+                    logger.LogError(ex, $"Unable to manage subscription");
                 }
             };
 

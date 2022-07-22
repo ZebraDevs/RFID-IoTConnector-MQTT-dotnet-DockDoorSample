@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,12 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
 {
     public class PublisherManager : IPublisherManager
     {
+        private readonly ILogger<PublisherManager> logger;
         private readonly IMQTTClientService mqttClientService;
 
-        public PublisherManager(IMQTTClientService mqttClientService)
+        public PublisherManager(ILogger<PublisherManager> logger, IMQTTClientService mqttClientService)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mqttClientService = mqttClientService ?? throw new ArgumentNullException(nameof(mqttClientService));
         }
 
@@ -23,7 +26,8 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
             {
                 // Connect to MQTT broker
                 mqttClientService.Connect("mosquitto").Wait();
-                System.Console.WriteLine("Connected!");
+                mqttClientService.LogMessagePublished += arg => logger.LogDebug(arg);
+                logger.LogInformation("Connected!");
             }
         }
 
@@ -33,7 +37,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
 
             mqttClientService.Publish(topic, command.ToJson());
 
-            System.Console.WriteLine($"Message Successfully published to {topic}");
+            logger.LogInformation($"Message Successfully published to {topic}");
         }
     }
 }

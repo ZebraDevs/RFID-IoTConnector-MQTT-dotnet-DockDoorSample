@@ -2,23 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ZebraIoTConnector.Client.MQTT.Console;
 using ZebraIoTConnector.Client.MQTT.Console.Configuration;
 using ZebraIoTConnector.Client.MQTT.Console.Subscriptions;
 using ZebraIoTConnector.Persistence;
-
-Console.WriteLine("Hello, World!");
-
 
 static IHostBuilder CreateHostBuilder(string[] args) =>
     Host.CreateDefaultBuilder(args)
         .ConfigureServices((_, services) => DependencyRegistrar.BuildServiceCollection(services));
 
 // Regist services
-using IHost host = CreateHostBuilder(args).Build();
+var builder = CreateHostBuilder(args);
+using IHost host = builder.Build();
 
-ISubscriptionManager subscriptionManager;
-IConfigurationManager configurationManager;
 using (var scope = host.Services.CreateScope())
 {
     // Execute migration scripts
@@ -27,17 +24,30 @@ using (var scope = host.Services.CreateScope())
         context.Database.Migrate();
     }
 }
+
+ISubscriptionManager subscriptionManager;
+IConfigurationManager configurationManager;
+ILogger<Program> logger;
 using (var scope = host.Services.CreateScope())
 {
-    subscriptionManager = scope.ServiceProvider.GetService<ISubscriptionManager>() ?? throw new ArgumentNullException();
-    configurationManager = scope.ServiceProvider.GetService<IConfigurationManager>() ?? throw new ArgumentNullException();
+    logger = scope.ServiceProvider.GetService<ILogger<Program>>() ?? throw new ArgumentNullException();
 
-    // Download config & operation mode to reader registered as Equipments
-    configurationManager.ConfigureReaders();
-    // Subscribe to all Zebra topics
-    subscriptionManager.Subscribe("zebra/#");
+    try
+    {
+        subscriptionManager = scope.ServiceProvider.GetService<ISubscriptionManager>() ?? throw new ArgumentNullException();
+        configurationManager = scope.ServiceProvider.GetService<IConfigurationManager>() ?? throw new ArgumentNullException();
 
-    Console.ReadLine();
+        // Subscribe to all Zebra topics
+        subscriptionManager.Subscribe("zebra/#");
+        // Download config & operation mode to reader registered as Equipments
+        configurationManager.ConfigureReaders();
+
+        Console.ReadLine();
+    }
+    catch(Exception ex)
+    {
+        logger.LogError(ex, "Unexpected error occurred");
+    }
 }
 
 

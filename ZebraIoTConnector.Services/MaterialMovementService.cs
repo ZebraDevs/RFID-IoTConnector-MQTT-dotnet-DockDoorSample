@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,12 @@ namespace ZebraIoTConnector.Services
 {
     public class MaterialMovementService : IMaterialMovementService
     {
+        private readonly ILogger<MaterialMovementService> logger;
         private readonly IUnitOfWork unitOfWork;
 
-        public MaterialMovementService(IUnitOfWork unitOfWork)
+        public MaterialMovementService(ILogger<MaterialMovementService> logger, IUnitOfWork unitOfWork)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
         public void NewTagReaded(string clientId, List<TagReadEvent> tagReadEvent)
@@ -26,7 +29,7 @@ namespace ZebraIoTConnector.Services
             if(reader == null)
             {
                 // reader not registered yet, tag read message received before the hearbeat
-                Console.WriteLine($"Reader {clientId} not registered yet, tag read message received before the hearbeat");
+                logger.LogWarning($"Reader {clientId} not registered yet, tag read message received before the hearbeat");
                 return;
             }
 
@@ -34,7 +37,7 @@ namespace ZebraIoTConnector.Services
             {
                 // DO NOTHING
                 // Storage Unit is not configured for this reader
-                Console.WriteLine($"WARN: Storage Unit has to be configured manually so that reader '{clientId}' can be used");
+                logger.LogWarning($"Storage Unit has to be configured manually so that reader '{clientId}' can be used");
                 return;
             }
 
@@ -62,6 +65,8 @@ namespace ZebraIoTConnector.Services
 
                 // Commit the transaction
                 unitOfWork.CommitTransaction();
+                foreach (var sublot in sublots)
+                    logger.LogInformation($"Sublot {sublot} moved successfully to {destinationStorageUnit} - Readed from Equipment {reader}");
             }
             catch
             {

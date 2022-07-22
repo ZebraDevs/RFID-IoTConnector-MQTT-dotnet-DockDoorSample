@@ -8,7 +8,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         event Func<SubscriptionEventReceived, Task> ApplicationMessageReceived;
         event EventHandler? Disconnected;
-        //event Action<string>? LogMessagePublished;
+        event Action<string>? LogMessagePublished;
 
         Task<bool> Connect(string server);
         Task Disconnect();
