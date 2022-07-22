@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,12 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
                 payload = "[" + args.Payload + "]";
             }
 
-            List<TagDataEvent> result = JsonConvert.DeserializeObject<List<TagDataEvent>>(payload);
+            var token = JToken.Parse(payload);
+            List<TagDataEvent> result = new List<TagDataEvent>();
+            if (token is JArray)
+                result = JsonConvert.DeserializeObject<List<TagDataEvent>>(payload);
+            else
+                result = new List<TagDataEvent>() { JsonConvert.DeserializeObject<TagDataEvent>(payload) };
 
             if (result == null)
                 return;
