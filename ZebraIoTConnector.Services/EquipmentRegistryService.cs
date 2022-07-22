@@ -23,5 +23,9 @@ namespace ZebraIoTConnector.Services
             // Storage Unit to be configured manually
             unitOfWork.EquipmentRepository.AddIfNotExists(heartBeat.ClientId, null);
         }
+        public List<string> GetReaderNames()
+        {
+            return unitOfWork.EquipmentRepository.GetEquipments().Select(x => x.Name).ToList();
+        }
     }
 }

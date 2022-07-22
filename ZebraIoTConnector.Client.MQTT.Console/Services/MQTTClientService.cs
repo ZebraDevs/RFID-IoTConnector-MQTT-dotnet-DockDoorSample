@@ -7,7 +7,7 @@ using ZebraIoTConnector.Client.MQTT.Console.Model;
 
 namespace ZebraIoTConnector.Client.MQTT.Console.Services
 {
-    public sealed class MQTTClientService
+    public sealed class MQTTClientService : IMQTTClientService
     {
         //readonly List<Action<InspectMqttPacketEventArgs>> _messageInspectors = new();
         readonly MqttNetEventLogger _mqttNetEventLogger = new();
@@ -23,7 +23,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         public event EventHandler? Disconnected;
 
-        public event Action<string>? LogMessagePublished;
+        //public event Action<string>? LogMessagePublished;
 
         public bool IsConnected => _mqttClient?.IsConnected == true;
 
@@ -119,7 +119,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         Task OnApplicationMessageReceived(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
-            
+
             return ApplicationMessageReceived.Invoke(new SubscriptionEventReceived(eventArgs.ApplicationMessage.Topic, Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload)));
         }
 
@@ -142,7 +142,8 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Services
 
         void OnLogMessagePublished(object? sender, MqttNetLogMessagePublishedEventArgs e)
         {
-            LogMessagePublished?.Invoke(e.LogMessage.Message);
+            System.Console.WriteLine(e.LogMessage.Message);
+            //LogMessagePublished?.Invoke(e.LogMessage.Message);
         }
 
         void ThrowIfNotConnected()

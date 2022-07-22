@@ -10,5 +10,6 @@ namespace ZebraIoTConnector.Services
     public interface IEquipmentRegistryService
     {
         public void FXReaderHeartBeat(HeartBeatEvent heartBeat);
+        List<string> GetReaderNames();
     }
 }

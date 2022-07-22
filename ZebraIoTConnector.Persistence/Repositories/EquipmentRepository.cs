@@ -34,6 +34,20 @@ namespace ZebraIoTConnector.Persistence.Repositories
             }
         }
 
+        public List<EquipmentDto> GetEquipments()
+        {
+            return zebraDbContext.Equipments
+                .Include(x => x.ReferenceStorageUnit)
+                .Select(eq => new EquipmentDto()
+                {
+                    Id = eq.Id,
+                    Name = eq.Name,
+                    Description = eq.Description,
+                    RefStorageUnitName = eq.ReferenceStorageUnit == null ? "" : eq.ReferenceStorageUnit.Name,
+                    RefStorageUnitDirection = eq.ReferenceStorageUnit == null ? DomainModel.Enums.Direction.None : eq.ReferenceStorageUnit.Direction
+                })
+                .ToList();
+        }
         public EquipmentDto GetEquipmentByName(string name)
         {
             var eq = zebraDbContext.Equipments

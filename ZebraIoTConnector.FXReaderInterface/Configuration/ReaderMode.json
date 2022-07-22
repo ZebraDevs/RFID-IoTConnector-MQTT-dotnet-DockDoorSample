@@ -1,0 +1,4 @@
+{
+    "tagMetaData": [ "ANTENNA", "RSSI", "CHANNEL", "PC", "XPC", "CRC", "SEEN_COUNT", "PHASE" ],
+    "type": "SIMPLE"
+}

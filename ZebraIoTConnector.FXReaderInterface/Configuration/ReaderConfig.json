@@ -1,0 +1,13 @@
+{
+    "READER-GATEWAY": {
+        "batching": {
+            "maxPayloadSizePerReport": 0,
+            "reportingInterval": 0
+        },
+        "retention": {
+            "maxEventRetentionTimeInMin": -1,
+            "maxNumEvents": 150000,
+            "throttle": 500
+        }
+    }
+}
