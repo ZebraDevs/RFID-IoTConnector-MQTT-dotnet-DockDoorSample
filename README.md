@@ -74,6 +74,8 @@ Once the container is up and running, you can connect your reader.
 
 #### Connection Setup
 ![image](https://user-images.githubusercontent.com/101400857/180752287-0b3665b9-24d1-4b24-a87e-62c719e3e0a1.png)
+![image](https://user-images.githubusercontent.com/101400857/180755415-9a43a8de-f705-48f8-b6a5-9a8248ed9efd.png)
+
 #### Topic Setup
 ![image](https://user-images.githubusercontent.com/101400857/180752210-b31faf90-e091-493c-b3a0-75340c280895.png)
 
