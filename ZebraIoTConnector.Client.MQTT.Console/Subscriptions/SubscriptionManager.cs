@@ -54,20 +54,21 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
         public Task SubscriptionEventReceived(SubscriptionEventReceived args)
         {
             // Default config:
-            // zebra/{myreader}/{interface}
+            // zebra/{myreader}/{topic}
             // e.g.
-            // zebra/FX000000/controlCommand
-            // zebra/FX000000/controlResponse
+            // zebra/FX000000/data
+            // zebra/FX000000/events
+            // zebra/FX000000/ctrl/res
 
             switch (args.Topic.Split('/').Last())
             {
-                case "TagDataEvents":
+                case "data":
                     subscriptionEventParser.TagDataEventParser(args);
                     break;
-                case "ManagementEvents":
+                case "events":
                     subscriptionEventParser.ManagementEventParser(args);
                     break;
-                case "ControlResponse":
+                case "ctrl/res":
                     break;
                 default:
                     break;

@@ -23,20 +23,12 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
         }
         public void TagDataEventParser(SubscriptionEventReceived args)
         {
-            string payload = args.Payload;
-            // WORK AROUND IOT CONNECTOR BUG: Aggregated events come as array
-            // while the single event comes as object
-            if (!payload.StartsWith('['))
-            {
-                payload = "[" + args.Payload + "]";
-            }
-
-            var token = JToken.Parse(payload);
+            var token = JToken.Parse(args.Payload);
             List<TagDataEvent> result = new List<TagDataEvent>();
             if (token is JArray)
-                result = JsonConvert.DeserializeObject<List<TagDataEvent>>(payload);
+                result = JsonConvert.DeserializeObject<List<TagDataEvent>>(args.Payload);
             else
-                result = new List<TagDataEvent>() { JsonConvert.DeserializeObject<TagDataEvent>(payload) };
+                result = new List<TagDataEvent>() { JsonConvert.DeserializeObject<TagDataEvent>(args.Payload) };
 
             if (result == null)
                 return;
