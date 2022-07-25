@@ -26,7 +26,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
             foreach (var reader in readers)
             {
                 // Set Config
-                publisherManager.Publish($"zebra/{reader}/ControlCommand", new RAWMQTTCommand()
+                publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
                 {
                     Command = "set_config",
                     CommandId = DateTime.Now.Ticks.ToString(),
@@ -34,7 +34,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
                 });
                 logger.LogInformation($"set_config sent to reader {reader}");
                 // Set Mode
-                publisherManager.Publish($"zebra/{reader}/ControlCommand", new RAWMQTTCommand()
+                publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
                 {
                     Command = "set_mode",
                     CommandId = DateTime.Now.Ticks.ToString(),
@@ -43,13 +43,13 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
                 logger.LogInformation($"set_mode sent to reader {reader}");
 
                 // Send stop and start to restart the reading
-                publisherManager.Publish($"zebra/{reader}/ControlCommand", new RAWMQTTCommand()
+                publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
                 {
                     Command = "stop",
                     CommandId = DateTime.Now.Ticks.ToString(),
                     Payload = new object()
                 });
-                publisherManager.Publish($"zebra/{reader}/ControlCommand", new RAWMQTTCommand()
+                publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
                 {
                     Command = "start",
                     CommandId = DateTime.Now.Ticks.ToString(),
