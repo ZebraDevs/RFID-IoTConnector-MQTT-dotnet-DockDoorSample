@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}zebraiotconnectorclientmqttconsole
     build:
       context: .
-      dockerfile: /ZebraIoTConnector.Client.MQTT.Console/Dockerfile
+      dockerfile: ./ZebraIoTConnector.Client.MQTT.Console/Dockerfile
     # Shared Network
     networks:
       - mosquitto_go_net
@@ -19,7 +19,6 @@ services:
     # Shared Network
     networks:
         - mosquitto_go_net  
-    hostname: "$host_name"
 
   mosquitto:
       image: eclipse-mosquitto:latest
