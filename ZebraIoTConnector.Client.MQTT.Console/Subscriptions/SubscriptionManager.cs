@@ -68,7 +68,8 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
                 case "events":
                     subscriptionEventParser.ManagementEventParser(args);
                     break;
-                case "ctrl/res":
+                case "res":
+                    subscriptionEventParser.AllTopicsResponseParser(args);
                     break;
                 default:
                     break;

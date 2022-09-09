@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ZebraIoTConnector.Client.MQTT.Console.Model.Control;
+using ZebraIoTConnector.Client.MQTT.Console.Models.Control;
 using ZebraIoTConnector.Client.MQTT.Console.Publisher;
 using ZebraIoTConnector.FXReaderInterface;
 
@@ -23,7 +24,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
         {
             var readers = fXReaderManager.GetReaderNames();
 
-            foreach (var reader in readers)
+            readers.AsParallel().ForAll(reader =>
             {
                 // Set Config
                 publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
@@ -49,6 +50,22 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
                     CommandId = DateTime.Now.Ticks.ToString(),
                     Payload = new object()
                 });
+
+                // Make amber led flashing for few seconds, config successfully applied
+                publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
+                {
+                    Command = "set_appled",
+                    CommandId = DateTime.Now.Ticks.ToString(),
+                    Payload = new SetAppledCommand()
+                    {
+                        Color = SetAppledCommand.ColorEnum.AmberEnum,
+                        Seconds = 2,
+                        Flash = true
+                    }
+                });
+                // Flash a bit before to start the reading
+                Thread.Sleep(2000);
+
                 publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
                 {
                     Command = "start",
@@ -56,7 +73,9 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
                     Payload = new object()
                 });
                 logger.LogInformation($"Reading Tag restarted for reader {reader}");
-            }
+
+            });
+
         }
     }
 }
