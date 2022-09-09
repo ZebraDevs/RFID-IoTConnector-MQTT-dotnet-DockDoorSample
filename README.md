@@ -84,10 +84,24 @@ Start reading tags and enjoy.
 
 ## Project Structure
 
-### Docker Compose
+### Docker
 
 - **zebraiotconnector.client.mqtt.console** MQTT Client (Core business logic)
 - **sql.data** SQL Server instance
 - **mosquitto** MQTT Broker 
 
-WIP
+### Solution
+
+- ZebraIoTConnector.Client.MQTT.Console: MQTT Client for our reader
+- ZebraIoTConnector.DomainModel: DTO (Data Transfer Object) to pass across layers
+- ZebraIoTConnector.FXReaderInterface: Additional layer to make business logic independent from the way we communicate with the reader (MQTT, HTTP etc.)
+- ZebraIoTConnector.Persistence: DAL (Data Access Layer) Entity Framework is used as ORM
+- ZebraIoTConnector.Services: Core business logic.
+
+### Database
+
+- __EFMigrationsHistory: Entity Framework schema comparison
+- Equipments: Contains the readers to be used
+- InventoryOperations: Registers each movement of Sublot (our tag) between readers.
+- StorageUnits: Warehouse locations
+- Sublots: Full Inventory (our tags)

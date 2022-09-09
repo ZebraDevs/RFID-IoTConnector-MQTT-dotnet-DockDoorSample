@@ -9,6 +9,9 @@ services:
     # Shared Network
     networks:
       - mosquitto_go_net
+    # Console output
+    stdin_open: true
+    tty: true
   sql.data:
     image: mcr.microsoft.com/mssql/server:2017-latest
     environment:
