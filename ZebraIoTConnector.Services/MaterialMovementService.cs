@@ -66,7 +66,7 @@ namespace ZebraIoTConnector.Services
                 // Commit the transaction
                 unitOfWork.CommitTransaction();
                 foreach (var sublot in sublots)
-                    logger.LogInformation($"Sublot {sublot} moved successfully to {destinationStorageUnit} - Readed from Equipment {reader}");
+                    logger.LogInformation($"Sublot {sublot.Identifier} moved successfully to {destinationStorageUnit} - Readed from Equipment {reader}");
             }
             catch
             {

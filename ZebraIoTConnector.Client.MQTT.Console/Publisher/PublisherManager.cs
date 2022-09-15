@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using ZebraIoTConnector.Client.MQTT.Console.Model.Control;
 using ZebraIoTConnector.Client.MQTT.Console.Services;
+using ZebraIoTConnector.FXReaderInterface;
 
 namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
 {
@@ -31,11 +34,18 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
             }
         }
 
-        public void Publish(string topic, RAWMQTTCommand command)
+        public void Publish(string topic, string command, object payload)
         {
             CheckIfConnected();
 
-            mqttClientService.Publish(topic, command.ToJson());
+            var rawCommand = new RAWMQTTCommand()
+            {
+                Command = command,
+                CommandId = DateTime.Now.Ticks.ToString(),
+                Payload = payload
+            };
+
+            mqttClientService.Publish(topic, rawCommand.ToJson());
 
             logger.LogInformation($"Message Successfully published to {topic}");
         }

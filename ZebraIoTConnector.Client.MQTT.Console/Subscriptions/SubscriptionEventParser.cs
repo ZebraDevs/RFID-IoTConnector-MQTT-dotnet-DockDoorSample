@@ -75,7 +75,7 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
         {
             var result = JsonConvert.DeserializeObject<RAWMQTTResponses>(args.Payload);
 
-            if(result.Response.HasValue && result.Response.Value == RAWMQTTResponses.ResponseEnum.FailureEnum)
+            if (result.Response.HasValue && result.Response.Value == RAWMQTTResponses.ResponseEnum.FailureEnum)
             {
                 // Ignore set_appled to avoid loops
                 // Ignore start/stop. At the startup both command are issued to read again everything
@@ -84,17 +84,13 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
                     return;
 
                 // Flash the red light for few seconds to highlight that something went wrong
-                publisherManager.Publish($"zebra/{args.ClientId}/ctrl/cmd", new RAWMQTTCommand()
-                {
-                    Command = "set_appled",
-                    CommandId = DateTime.Now.Ticks.ToString(),
-                    Payload = new SetAppledCommand()
+                publisherManager.Publish($"zebra/{args.ClientId}/ctrl/cmd", "set_appled",
+                    new SetAppledCommand()
                     {
                         Color = SetAppledCommand.ColorEnum.RedEnum,
                         Seconds = 10,
                         Flash = true
-                    }
-                });
+                    });
             }
         }
     }

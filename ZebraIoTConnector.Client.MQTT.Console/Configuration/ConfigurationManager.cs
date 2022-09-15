@@ -29,67 +29,42 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Configuration
                 try
                 {
                     // Set Config
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "set_config",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = JsonConvert.DeserializeObject(FXReaderManager.GetConfiguration())
-                    });
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "set_config", JsonConvert.DeserializeObject(FXReaderManager.GetConfiguration()));
                     logger.LogInformation($"set_config sent to reader {reader}");
                     // Set Mode
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "set_mode",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = JsonConvert.DeserializeObject(FXReaderManager.GetOperationMode())
-                    });
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "set_mode", JsonConvert.DeserializeObject(FXReaderManager.GetOperationMode()));
                     logger.LogInformation($"set_mode sent to reader {reader}");
 
                     // Send stop and start to restart the reading
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "stop",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = new object()
-                    });
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "stop", new object());
 
                     // Make amber led flashing for few seconds, config successfully applied
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "set_appled",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = new SetAppledCommand()
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "set_appled", 
+                        new SetAppledCommand()
                         {
                             Color = SetAppledCommand.ColorEnum.AmberEnum,
                             Seconds = 2,
                             Flash = true
-                        }
-                    });
+                        });
+
                     // Flash a bit before to start the reading
                     Thread.Sleep(2000);
 
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "start",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = new object()
-                    });
+                    // Start cloud
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "start", new object());
+
                     logger.LogInformation($"Reading Tag restarted for reader {reader}");
                 }
                 catch(Exception ex)
                 {
                     // Error on startup => keep the led red
-                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", new RAWMQTTCommand()
-                    {
-                        Command = "set_appled",
-                        CommandId = DateTime.Now.Ticks.ToString(),
-                        Payload = new SetAppledCommand()
+                    publisherManager.Publish($"zebra/{reader}/ctrl/cmd", "set_appled",
+                        new SetAppledCommand()
                         {
                             Color = SetAppledCommand.ColorEnum.RedEnum,
                             Seconds = int.MaxValue,
                             Flash = true
-                        }
-                    });
+                        });
                     throw;
                 }
             });

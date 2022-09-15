@@ -4,6 +4,6 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Publisher
 {
     public interface IPublisherManager
     {
-        void Publish(string topic, RAWMQTTCommand command);
+        void Publish(string topic, string command, object payload);
     }
 }
