@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Data.Common;
 using ZebraIoTConnector.Client.MQTT.Console;
 using ZebraIoTConnector.Client.MQTT.Console.Configuration;
 using ZebraIoTConnector.Client.MQTT.Console.Subscriptions;
@@ -21,7 +22,7 @@ using (var scope = host.Services.CreateScope())
     // Execute migration scripts
     using (var context = scope.ServiceProvider.GetService<ZebraDbContext>())
     {
-        context.Database.Migrate();
+        context.Database.Migrate(); 
     }
 }
 
@@ -39,8 +40,6 @@ using (var scope = host.Services.CreateScope())
 
         // Subscribe to all Zebra topics
         subscriptionManager.Subscribe("zebra/#");
-        // Download config & operation mode to reader registered as Equipments
-        configurationManager.ConfigureReaders();
 
         Console.ReadLine();
     }

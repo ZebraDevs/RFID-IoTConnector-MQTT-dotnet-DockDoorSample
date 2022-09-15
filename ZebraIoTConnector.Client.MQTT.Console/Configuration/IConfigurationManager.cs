@@ -2,6 +2,8 @@
 {
     public interface IConfigurationManager
     {
+        [Obsolete]
         void ConfigureReaders();
+        void ConfigureReader(string clientId);
     }
 }

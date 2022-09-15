@@ -16,5 +16,6 @@ namespace ZebraIoTConnector.Persistence.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public StorageUnit? ReferenceStorageUnit { get; set; }
+        public bool IsConfigured { get; set; }
     }
 }

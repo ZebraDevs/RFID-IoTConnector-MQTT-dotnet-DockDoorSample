@@ -20,12 +20,11 @@ namespace ZebraIoTConnector.FXReaderInterface
             this.materialMovementService = materialMovementService ?? throw new ArgumentNullException(nameof(materialMovementService));
         }
 
-        public static string GetConfiguration()
+        public string GetDefaultConfiguration()
         {
             return Encoding.UTF8.GetString(Resources.ReaderConfig);
         }
-
-        public static string GetOperationMode()
+        public string GetDefaultOperationMode()
         {
             return Encoding.UTF8.GetString(Resources.ReaderMode);
         }
@@ -33,21 +32,22 @@ namespace ZebraIoTConnector.FXReaderInterface
         {
             return equipmentRegistryService.GetReaderNames();
         }
-
-        public void HearthBeatEventReceived(HeartBeatEvent heartBeatEvent)
+        public bool IsReaderConfigured(string readerName)
         {
-            equipmentRegistryService.FXReaderHeartBeat(heartBeatEvent);
+            return equipmentRegistryService.IsConfigured(readerName);
+        }
+        public void SetReaderConfigured(string readerName)
+        {
+            equipmentRegistryService.SetReaderConfigured(readerName);
+        }
+        public void HeartBeatEventReceived(HeartBeatEvent heartBeatEvent)
+        {
+            equipmentRegistryService.CreateReaderIfNotExists(heartBeatEvent);
         }
 
         public void TagDataEventReceived(string clientId, List<TagReadEvent> tagReadEvent)
         {
             materialMovementService.NewTagReaded(clientId, tagReadEvent);
-        }
-        public void GPInStatusChanged()
-        {
-            // Send start reading command
-
-            throw new NotImplementedException();
         }
 
     }

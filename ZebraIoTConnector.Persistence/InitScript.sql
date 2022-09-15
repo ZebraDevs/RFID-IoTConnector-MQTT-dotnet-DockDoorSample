@@ -12,9 +12,9 @@ SET IDENTITY_INSERT[dbo].[StorageUnits] OFF
 GO
 SET IDENTITY_INSERT[dbo].[Equipments] ON
 GO
-INSERT[dbo].[Equipments]([Id], [Name], [Description], [ReferenceStorageUnitId]) VALUES(1, N'myfxOUT', N'Fixed Reader in Warehouse 1 (add yours or change name)', 1)
+INSERT[dbo].[Equipments]([Id], [Name], [Description], [ReferenceStorageUnitId], [IsConfigured]) VALUES(1, N'myfxOUT', N'Fixed Reader in Warehouse 1 (add yours or change name)', 1, 0)
 GO
-INSERT[dbo].[Equipments] ([Id], [Name], [Description], [ReferenceStorageUnitId]) VALUES(2, N'myfxIN', N'Fixed Reader in Warehouse 2 (add yours or change name)', 2)
+INSERT[dbo].[Equipments] ([Id], [Name], [Description], [ReferenceStorageUnitId], [IsConfigured]) VALUES(2, N'myfxIN', N'Fixed Reader in Warehouse 2 (add yours or change name)', 2, 0)
 GO
 SET IDENTITY_INSERT[dbo].[Equipments] OFF
 GO

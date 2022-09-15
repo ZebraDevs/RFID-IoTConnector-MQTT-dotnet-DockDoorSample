@@ -17,11 +17,19 @@ namespace ZebraIoTConnector.Services
         {
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
-        public void FXReaderHeartBeat(HeartBeatEvent heartBeat)
+        public void CreateReaderIfNotExists(HeartBeatEvent heartBeat)
         {
             // Add reader if it does not exists.
             // Storage Unit to be configured manually
             unitOfWork.EquipmentRepository.AddIfNotExists(heartBeat.ClientId, null);
+        }
+        public bool IsConfigured(string readerName)
+        {
+            return unitOfWork.EquipmentRepository.GetEquipmentByName(readerName).IsConfigured;
+        }
+        public void SetReaderConfigured(string readerName)
+        {
+            unitOfWork.EquipmentRepository.SetReaderConfigured(readerName);
         }
         public List<string> GetReaderNames()
         {

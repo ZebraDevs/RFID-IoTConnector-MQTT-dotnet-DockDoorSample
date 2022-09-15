@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using ZebraIoTConnector.DomainModel.Dto;
 using ZebraIoTConnector.Persistence.Entities;
 
@@ -27,7 +28,8 @@ namespace ZebraIoTConnector.Persistence.Repositories
                 zebraDbContext.Add(new Equipment()
                 {
                     Name = equipmentName,
-                    ReferenceStorageUnit = storageUnit
+                    ReferenceStorageUnit = storageUnit,
+                    IsConfigured = false
                 });
 
                 zebraDbContext.SaveChanges();
@@ -44,7 +46,8 @@ namespace ZebraIoTConnector.Persistence.Repositories
                     Name = eq.Name,
                     Description = eq.Description,
                     RefStorageUnitName = eq.ReferenceStorageUnit == null ? "" : eq.ReferenceStorageUnit.Name,
-                    RefStorageUnitDirection = eq.ReferenceStorageUnit == null ? DomainModel.Enums.Direction.None : eq.ReferenceStorageUnit.Direction
+                    RefStorageUnitDirection = eq.ReferenceStorageUnit == null ? DomainModel.Enums.Direction.None : eq.ReferenceStorageUnit.Direction,
+                    IsConfigured = eq.IsConfigured
                 })
                 .ToList();
         }
@@ -62,8 +65,15 @@ namespace ZebraIoTConnector.Persistence.Repositories
                 Name = eq.Name,
                 Description = eq.Description,
                 RefStorageUnitName = eq.ReferenceStorageUnit?.Name,
-                RefStorageUnitDirection = eq.ReferenceStorageUnit?.Direction
+                RefStorageUnitDirection = eq.ReferenceStorageUnit?.Direction,
+                IsConfigured = eq.IsConfigured
             };
+        }
+
+        public void SetReaderConfigured(string readerName)
+        {
+            var eq = zebraDbContext.Equipments.Include(x => x.ReferenceStorageUnit).Single(x => x.Name == readerName);
+            eq.IsConfigured = true;
         }
     }
 }

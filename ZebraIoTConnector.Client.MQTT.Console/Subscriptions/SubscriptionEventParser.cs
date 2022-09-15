@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using ZebraIoTConnector.Client.MQTT.Console.Configuration;
 using ZebraIoTConnector.Client.MQTT.Console.Model;
 using ZebraIoTConnector.Client.MQTT.Console.Model.Control;
 using ZebraIoTConnector.Client.MQTT.Console.Models.Control;
@@ -22,11 +23,13 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
     {
         private readonly IFXReaderManager fXReaderManager;
         private readonly IPublisherManager publisherManager;
+        private readonly IConfigurationManager configurationManager;
 
-        public SubscriptionEventParser(IFXReaderManager fXReaderManager, IPublisherManager publisherManager)
+        public SubscriptionEventParser(IFXReaderManager fXReaderManager, IPublisherManager publisherManager, IConfigurationManager configurationManager)
         {
             this.fXReaderManager = fXReaderManager ?? throw new ArgumentNullException(nameof(fXReaderManager));
             this.publisherManager = publisherManager ?? throw new ArgumentNullException(nameof(publisherManager));
+            this.configurationManager = configurationManager ?? throw new ArgumentNullException(nameof(configurationManager));
         }
         public void TagDataEventParser(SubscriptionEventReceived args)
         {
@@ -60,11 +63,15 @@ namespace ZebraIoTConnector.Client.MQTT.Console.Subscriptions
             switch (result.Type)
             {
                 case "heartbeat":
-                    // This sample app does not require any particular data from the heatbeat, just the client id.
+                    // This sample app does not require any particular data from the heartbeat, just the client id.
                     //var message = JsonConvert.DeserializeObject<AsyncEvents<Heartbeat>>(args.Payload).Data;
 
-                    var heatBeat = new HeartBeatEvent() { ClientId = args.ClientId };
-                    fXReaderManager.HearthBeatEventReceived(heatBeat);
+                    var heartBeat = new HeartBeatEvent() { ClientId = args.ClientId };
+                    // Send heartbeat event, it will create the reader if it does not exists
+                    fXReaderManager.HeartBeatEventReceived(heartBeat);
+                    // Download default configuration for the first time.
+                    configurationManager.ConfigureReader(heartBeat.ClientId);
+
                     break;
                 default:
                     break;

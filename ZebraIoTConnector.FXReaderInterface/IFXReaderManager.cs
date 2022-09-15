@@ -4,9 +4,12 @@ namespace ZebraIoTConnector.FXReaderInterface
 {
     public interface IFXReaderManager
     {
-        public void HearthBeatEventReceived(HeartBeatEvent heartBeatEvent);
-        public void TagDataEventReceived(string clientId, List<TagReadEvent> tagReadEvent);
-        public void GPInStatusChanged();
+        string GetDefaultConfiguration();
+        string GetDefaultOperationMode();
         List<string> GetReaderNames();
+        bool IsReaderConfigured(string readerName);
+        void SetReaderConfigured(string readerName);
+        public void HeartBeatEventReceived(HeartBeatEvent heartBeatEvent);
+        public void TagDataEventReceived(string clientId, List<TagReadEvent> tagReadEvent);
     }
 }

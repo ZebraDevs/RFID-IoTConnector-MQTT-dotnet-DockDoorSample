@@ -7,5 +7,6 @@ namespace ZebraIoTConnector.Persistence.Repositories
         void AddIfNotExists(string equipmentName, string storageUnitName);
         List<EquipmentDto> GetEquipments();
         EquipmentDto GetEquipmentByName(string name);
+        void SetReaderConfigured(string readerName);
     }
 }

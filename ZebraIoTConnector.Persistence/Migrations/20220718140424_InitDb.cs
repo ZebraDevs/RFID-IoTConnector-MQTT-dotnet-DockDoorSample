@@ -152,7 +152,6 @@ namespace ZebraIoTConnector.Persistence.Migrations
                 column: "StorageUnitId");
 
 
-            migrationBuilder.Sql(Resources.InitScript);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
