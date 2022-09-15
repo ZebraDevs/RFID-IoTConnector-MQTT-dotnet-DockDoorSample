@@ -1,4 +1,4 @@
-# Zebra RFID IoTConnector - Dock Door Sample
+# Zebra RFID IoT Connector - MQTT - Dock Door Sample
 
 ## Concept
 ```
