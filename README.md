@@ -105,3 +105,7 @@ Start reading tags and enjoy.
 - InventoryOperations: Registers each movement of Sublot (our tag) between readers.
 - StorageUnits: Warehouse locations
 - Sublots: Full Inventory (our tags)
+
+# License
+
+[MIT](LICENSE.txt)
